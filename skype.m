@@ -257,13 +257,14 @@ XS(Cocoa__Skype__send) {
         Perl_croak(aTHX_ "Usage: $obj->send($msg)");
     }
 
-    sv_msg = ST(0);
+    sv_msg = ST(1);
 
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
     ptr = SvPV(sv_msg, len);
     msg = [NSString stringWithUTF8String:ptr];
 
+    LOG(@"sendSkypeCommand: %@", msg);
     [API sendSkypeCommand:msg];
 
     [pool drain];
