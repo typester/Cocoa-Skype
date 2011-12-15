@@ -252,12 +252,19 @@ XS(Cocoa__Skype__send) {
     char* ptr;
     STRLEN len;
     NSString* msg;
+    NSString* res;
+    HV* hv;
+    SV** sv_cb;
+    SV* sv_res;
 
     if (items < 2) {
         Perl_croak(aTHX_ "Usage: $obj->send($msg)");
     }
 
+    hv     = (HV*)SvRV(ST(0));
     sv_msg = ST(1);
+
+    sv_cb  = hv_fetch(hv, "on_notification_received", 24, 0);
 
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
@@ -265,7 +272,26 @@ XS(Cocoa__Skype__send) {
     msg = [NSString stringWithUTF8String:ptr];
 
     LOG(@"sendSkypeCommand: %@", msg);
-    [API sendSkypeCommand:msg];
+    res = (NSString*)[API sendSkypeCommand:msg];
+    LOG(@"response: %@", res);
+
+    if (res && sv_cb) {
+        sv_res = sv_2mortal(newSV(0));
+        sv_setpv(sv_res, [res UTF8String]);
+
+        ENTER;
+        SAVETMPS;
+        PUSHMARK(SP);
+        XPUSHs(sv_res);
+        PUTBACK;
+
+        call_sv(*sv_cb, G_SCALAR);
+
+        SPAGAIN;
+        PUTBACK;
+        FREETMPS;
+        LEAVE;
+    }
 
     [pool drain];
 
