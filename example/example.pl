@@ -26,5 +26,16 @@ my $skype = Cocoa::Skype->new(
 
 $skype->connect;
 
+my $stdin = Cocoa::EventLoop->io(
+    fh   => *STDIN,
+    poll => 'r',
+    cb   => sub {
+        my $input = <STDIN>;
+        if (defined $input) {
+            $skype->send($input) if $input;
+        }
+    },
+);
+
 
 Cocoa::EventLoop->run;
