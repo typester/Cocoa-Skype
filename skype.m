@@ -257,7 +257,7 @@ XS(Cocoa__Skype__send) {
     STRLEN len;
     NSString* msg;
     NSString* res;
-    SV* sv_res;
+    SV* sv_res = NULL;
 
     if (items < 2) {
         Perl_croak(aTHX_ "Usage: $obj->send($msg)");
@@ -277,14 +277,17 @@ XS(Cocoa__Skype__send) {
     if (res) {
         sv_res = sv_2mortal(newSV(0));
         sv_setpv(sv_res, [res UTF8String]);
-    } else {
-        sv_res = &PL_sv_undef;
     }
 
     [pool drain];
 
-    ST(0) = sv_res;
-    XSRETURN(1);
+    if (sv_res) {
+        ST(0) = sv_res;
+        XSRETURN(1);
+    }
+    else {
+        XSRETURN(0);
+    }
 }
 
 XS(Cocoa__Skype__DESTROY) {
