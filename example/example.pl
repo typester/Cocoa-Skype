@@ -36,7 +36,8 @@ my $stdin = Cocoa::EventLoop->io(
     cb   => sub {
         my $input = <STDIN>;
         if (defined $input) {
-            $skype->send($input) if $input;
+            my $res = $skype->send($input);
+            warn 'res: ', $res if $res;
         }
     },
 );

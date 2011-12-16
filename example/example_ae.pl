@@ -32,7 +32,8 @@ my $stdin; $stdin = AE::io *STDIN, 0, sub {
     my $input = <STDIN>;
     return unless defined $input;
 
-    $skype->send($input);
+    my $res = $skype->send($input);
+    warn 'res: ', $res if $res;
 };
 
 AE::cv->recv;
