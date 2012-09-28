@@ -62,7 +62,6 @@ static Class API;
         ENTER;
         SAVETMPS;
         PUSHMARK(SP);
-        XPUSHs(self->perl_obj);
         XPUSHs(sv_code);
         PUTBACK;
 
@@ -93,7 +92,6 @@ static Class API;
         ENTER;
         SAVETMPS;
         PUSHMARK(SP);
-        XPUSHs(self->perl_obj);
         XPUSHs(sv_notification);
         PUTBACK;
 
@@ -120,7 +118,6 @@ static Class API;
         ENTER;
         SAVETMPS;
         PUSHMARK(SP);
-        XPUSHs(self->perl_obj);
         PUTBACK;
 
         call_sv(*sv_cb, G_SCALAR);
@@ -146,7 +143,6 @@ static Class API;
         ENTER;
         SAVETMPS;
         PUSHMARK(SP);
-        XPUSHs(self->perl_obj);
         PUTBACK;
 
         call_sv(*sv_cb, G_SCALAR);

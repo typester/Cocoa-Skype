@@ -8,22 +8,18 @@ my $skype = Cocoa::Skype->new(
     name => 'my test application',
 
     on_attach_response => sub {
-        my ($self, $code) = @_;
-        warn 'attach: ', $code;
+        warn 'attach: ', $_[0];
     },
 
     on_notification_received => sub {
-        my ($self, $notification) = @_;
-        warn 'notification: ', $notification;
+        warn 'notification: ', $_[0];
     },
 
     on_became_available => sub {
-        my $self = shift;
         warn 'became available';
     },
 
     on_became_unavailable => sub {
-        my $self = shift;
         warn 'became unavailable';
     },
 );
