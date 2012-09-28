@@ -4,7 +4,7 @@ use warnings;
 use XSLoader;
 use Carp;
 
-our $VERSION = '0.1';
+our $VERSION = '0.01';
 
 use File::ShareDir ();
 use File::Spec;
@@ -26,7 +26,7 @@ do {
             if $INSTANCE;
 
         $args{name} ||= __PACKAGE__ . '/' . $VERSION;
-        
+
         $INSTANCE = bless \%args, $class;
 
         _setup($INSTANCE);
