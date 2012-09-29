@@ -51,13 +51,13 @@ Cocoa::Skype - Perl interface to Skype.framework
   my $skype = Cocoa::Skype->new(
       name => 'my test application',
       on_attach_response => sub {
-          my ($self, $code) = @_;
+          my ($code) = @_;
           if ($code == 1) { # on success
               $self->send('PROTOCOL 8');
           }
       },
       on_notification_received => sub {
-          my ($self, $notification) = @_;
+          my ($notification) = @_;
 
           ...
       },
