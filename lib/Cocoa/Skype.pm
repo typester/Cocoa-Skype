@@ -4,7 +4,7 @@ use warnings;
 use XSLoader;
 use Carp;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use File::ShareDir ();
 use File::Spec;
