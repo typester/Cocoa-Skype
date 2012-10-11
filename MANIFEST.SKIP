@@ -19,4 +19,7 @@
 ^\.shipit$
 ^\.git/
 \.sw[po]$
+\.o(?:bj)?$
+\.bs$
+ppport\.h$
 ^MYMETA\.
