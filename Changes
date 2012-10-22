@@ -1,5 +1,8 @@
 Revision history for Perl extension Cocoa::Skype
 
+0.04    Tue Oct 23 00:54:15 2012
+        - documentation improvement
+
 0.03    Thu Oct 11 18:47:43 2012
         - fix testing issue
 
