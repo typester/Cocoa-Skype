@@ -48,12 +48,12 @@ Cocoa::Skype - Perl interface to Skype.framework
   use Cocoa::Skype;
   use Cocoa::EventLoop;
 
-  my $skype = Cocoa::Skype->new(
+  my $skype; $skype = Cocoa::Skype->new(
       name => 'my test application',
       on_attach_response => sub {
           my ($code) = @_;
           if ($code == 1) { # on success
-              $self->send('PROTOCOL 8');
+              $skype->send('PROTOCOL 8');
           }
       },
       on_notification_received => sub {
@@ -72,7 +72,7 @@ Cocoa::Skype provides Perl interface to Skype.framework.
 
 =head1 METHODS
 
-=head2 C<new>
+=head2 new
 
 =over 4
 
@@ -100,33 +100,54 @@ This callback is called after Skype has quit.
 
 =back
 
-=head2 C<connect>
+=head2 connect
 
   $skype->connect;
 
 Try to connect your application to Skype.
 
-=head2 C<disconnect>
+=head2 disconnect
 
   $skype->disconnect;
 
 Disconnects your application from Skype.
 
-=head2 C<send>
+=head2 send
 
   $skype->send($msg);
 
 Use this method to control Skype or request information. $msg is a Skype API string.
 
-=head2 C<isRunning>
+Note that this method does NOT guarantee an immediate response. Sometimes you will get an immediate response, or sometimes you will have to wait for the response. you can solve this problem with using L<Skype::Any>:
 
-  $skype->isRunning;
+  use Skype::Any;
+  use AnyEvent;
+
+  my $skype = Skype::Any->new();
+
+  # e.g. Skype API REPL
+  my $w; $w = AE::io *STDIN, 0, sub {
+      chomp(my $input = <STDIN>);
+      if ($input) {
+          eval {
+              my $command = $skype->api->send_command($input);
+              my $res = $command->reply(); # wait until a response comes back.
+              warn "$res\n";
+          };
+      }
+  };
+
+  $skype->run;
+
+=head2 isRunning
+
+  $skype->isRunning();
 
 Return 1, when Skype is running and 0 otherwise.
 
-=head2 C<isAvailable>
+=head2 isAvailable
 
-  $skype->isAvailable;
+  $skype->isAvailable();
 
 Return 1, when Skype is available and 0 otherwise.
 
